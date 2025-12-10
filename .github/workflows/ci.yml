@@ -57,6 +57,8 @@ jobs:
 
       - name: Run pytest with coverage
         run: pytest --cov=main --cov-report=xml:coverage.xml --cov-report=term
+        env:
+          PYTHONPATH: .
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
