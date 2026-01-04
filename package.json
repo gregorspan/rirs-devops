@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "build": "cd client && npm run build"
+  },
   "devDependencies": {
     "@types/jest": "^30.0.0"
   }
