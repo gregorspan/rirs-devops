@@ -124,17 +124,28 @@ jobs:
           
           echo "🔍 Checking Quality Gate status for project: $PROJECT_KEY"
           
-          # Get the quality gate status from SonarCloud API
-          QG_STATUS=$(curl -s -u "${{ secrets.SONAR_TOKEN }}:" \
-            "https://sonarcloud.io/api/qualitygates/project_status?projectKey=$PROJECT_KEY" | \
-            grep -o '"status":"[^"]*"' | cut -d'"' -f4)
+          # Get the quality gate status from SonarCloud API using jq for proper JSON parsing
+          API_RESPONSE=$(curl -s -u "${{ secrets.SONAR_TOKEN }}:" \
+            "https://sonarcloud.io/api/qualitygates/project_status?projectKey=$PROJECT_KEY")
+          
+          # Extract status using jq (more reliable than grep)
+          QG_STATUS=$(echo "$API_RESPONSE" | jq -r '.projectStatus.status // empty')
+          
+          # If jq is not available or status is empty, try alternative parsing
+          if [ -z "$QG_STATUS" ]; then
+            QG_STATUS=$(echo "$API_RESPONSE" | grep -o '"status":"[^"]*"' | head -1 | cut -d'"' -f4)
+          fi
           
           if [ -z "$QG_STATUS" ]; then
             echo "⚠️  Could not retrieve Quality Gate status. This might be the first analysis."
+            echo "API Response: $API_RESPONSE"
             echo "❌ Quality Gate check failed - cannot proceed with pipeline"
             echo "Please ensure SonarCloud analysis completed successfully."
             exit 1
           fi
+          
+          # Trim whitespace and newlines
+          QG_STATUS=$(echo "$QG_STATUS" | tr -d '\n\r' | xargs)
           
           echo "📊 Quality Gate Status: $QG_STATUS"
           
