@@ -10,7 +10,7 @@ services:
       - key: PORT
         value: 8000
       - key: CORS_ORIGINS
-        value: https://rirs-frontend.onrender.com
+        value: https://rirs-frontend-1jqg.onrender.com
     healthCheckPath: /
     plan: free
 
@@ -24,6 +24,6 @@ services:
       - key: PORT
         value: 3000
       - key: NEXT_PUBLIC_API_URL
-        value: https://rirs-backend.onrender.com/api
+        value: https://rirs-backend-um8m.onrender.com/api
     healthCheckPath: /
     plan: free

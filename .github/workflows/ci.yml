@@ -224,31 +224,63 @@ jobs:
           cache-to: type=registry,ref=${{ env.BACKEND_IMAGE_NAME }}:buildcache,mode=max
 
   # Deployment to Render
-  deploy-render:
-    name: Deploy to Render
+  deploy-render-frontend:
+    name: Deploy Frontend to Render
     runs-on: ubuntu-latest
-    needs: [docker-build-frontend, docker-build-backend]
+    needs: [docker-build-frontend]
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Deploy to Render
+      - name: Deploy Frontend to Render
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
-          service-id: ${{ secrets.RENDER_SERVICE_ID }}
+          service-id: ${{ secrets.RENDER_FRONTEND_SERVICE_ID }}
           api-key: ${{ secrets.RENDER_API_KEY }}
 
-      - name: Verify deployment and display URLs
+      - name: Display Frontend URL
+        run: |
+          echo "✅ Frontend deployed successfully"
+          echo "🌐 Frontend URL: https://rirs-frontend-1jqg.onrender.com"
+
+  deploy-render-backend:
+    name: Deploy Backend to Render
+    runs-on: ubuntu-latest
+    needs: [docker-build-backend]
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy Backend to Render
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.RENDER_BACKEND_SERVICE_ID }}
+          api-key: ${{ secrets.RENDER_API_KEY }}
+
+      - name: Display Backend URL
+        run: |
+          echo "✅ Backend deployed successfully"
+          echo "🌐 Backend URL: https://rirs-backend-um8m.onrender.com"
+          echo "🔗 API Endpoint: https://rirs-backend-um8m.onrender.com/api"
+
+  deploy-render-summary:
+    name: Deployment Summary
+    runs-on: ubuntu-latest
+    needs: [deploy-render-frontend, deploy-render-backend]
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    steps:
+      - name: Display deployment summary
         run: |
           echo "## 🚀 Deployment URLs" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Frontend Application" >> $GITHUB_STEP_SUMMARY
-          echo "- **URL:** https://rirs-frontend.onrender.com" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL:** https://rirs-frontend-1jqg.onrender.com" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Backend API" >> $GITHUB_STEP_SUMMARY
-          echo "- **URL:** https://rirs-backend.onrender.com" >> $GITHUB_STEP_SUMMARY
-          echo "- **API Endpoint:** https://rirs-backend.onrender.com/api" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL:** https://rirs-backend-um8m.onrender.com" >> $GITHUB_STEP_SUMMARY
+          echo "- **API Endpoint:** https://rirs-backend-um8m.onrender.com/api" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Docker Images" >> $GITHUB_STEP_SUMMARY
           echo "- Frontend: ${{ env.FRONTEND_IMAGE_NAME }}:latest" >> $GITHUB_STEP_SUMMARY
@@ -256,12 +288,12 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "📝 **Note:** You can also view your services in the [Render Dashboard](https://dashboard.render.com)" >> $GITHUB_STEP_SUMMARY
           
-          echo "✅ Deployment to Render completed successfully"
+          echo "✅ All deployments completed successfully"
           echo ""
           echo "🌐 Application URLs:"
-          echo "   Frontend: https://rirs-frontend.onrender.com"
-          echo "   Backend:  https://rirs-backend.onrender.com"
-          echo "   API:      https://rirs-backend.onrender.com/api"
+          echo "   Frontend: https://rirs-frontend-1jqg.onrender.com"
+          echo "   Backend:  https://rirs-backend-um8m.onrender.com"
+          echo "   API:      https://rirs-backend-um8m.onrender.com/api"
           echo ""
           echo "📦 Docker Images:"
           echo "   Frontend: ${{ env.FRONTEND_IMAGE_NAME }}:latest"

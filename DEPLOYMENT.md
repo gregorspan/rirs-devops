@@ -14,7 +14,11 @@ To enable the CI/CD pipeline, you need to configure the following secrets in you
 1. Go to your GitHub repository → Settings → Secrets and variables → Actions
 2. Add the following secrets:
    - `RENDER_API_KEY`: Your Render API key (found in Render Dashboard → Account Settings → API Keys)
-   - `RENDER_SERVICE_ID`: Your Render service ID (found in your service settings)
+   - `RENDER_FRONTEND_SERVICE_ID`: Your Render frontend service ID (found in your frontend service settings)
+   - `RENDER_BACKEND_SERVICE_ID`: Your Render backend service ID (found in your backend service settings)
+   
+   **How to find Service IDs:**
+   - Go to your Render Dashboard → Select the service → Settings → The Service ID is shown at the top of the settings page
 
 ### Frontend Environment Variables
 - `NEXT_PUBLIC_API_URL`: (Optional) The backend API URL for production. Defaults to `http://localhost:8000/api` if not set.
@@ -53,7 +57,7 @@ If you prefer to set up Render services manually:
 2. **Build Phase**: Builds the applications (only runs after successful tests)
 3. **Docker Build Phase**: Builds Docker images for both services
 4. **Docker Push Phase**: Pushes images to Docker Hub
-5. **Deploy Phase**: Deploys to Render (only on push to main/master branch)
+5. **Deploy Phase**: Deploys both frontend and backend services to Render separately (only on push to main/master branch)
 
 ## Caching
 
