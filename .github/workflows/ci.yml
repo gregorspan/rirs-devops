@@ -238,10 +238,31 @@ jobs:
         with:
           service-id: ${{ secrets.RENDER_SERVICE_ID }}
           api-key: ${{ secrets.RENDER_API_KEY }}
-          clear-cache: false
 
-      - name: Verify deployment
+      - name: Verify deployment and display URLs
         run: |
-          echo "Deployment to Render completed successfully"
-          echo "Frontend image: ${{ env.FRONTEND_IMAGE_NAME }}:latest"
-          echo "Backend image: ${{ env.BACKEND_IMAGE_NAME }}:latest"
+          echo "## 🚀 Deployment URLs" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Frontend Application" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL:** https://rirs-frontend.onrender.com" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Backend API" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL:** https://rirs-backend.onrender.com" >> $GITHUB_STEP_SUMMARY
+          echo "- **API Endpoint:** https://rirs-backend.onrender.com/api" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Docker Images" >> $GITHUB_STEP_SUMMARY
+          echo "- Frontend: ${{ env.FRONTEND_IMAGE_NAME }}:latest" >> $GITHUB_STEP_SUMMARY
+          echo "- Backend: ${{ env.BACKEND_IMAGE_NAME }}:latest" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📝 **Note:** You can also view your services in the [Render Dashboard](https://dashboard.render.com)" >> $GITHUB_STEP_SUMMARY
+          
+          echo "✅ Deployment to Render completed successfully"
+          echo ""
+          echo "🌐 Application URLs:"
+          echo "   Frontend: https://rirs-frontend.onrender.com"
+          echo "   Backend:  https://rirs-backend.onrender.com"
+          echo "   API:      https://rirs-backend.onrender.com/api"
+          echo ""
+          echo "📦 Docker Images:"
+          echo "   Frontend: ${{ env.FRONTEND_IMAGE_NAME }}:latest"
+          echo "   Backend:  ${{ env.BACKEND_IMAGE_NAME }}:latest"
