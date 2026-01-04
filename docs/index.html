@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RIRS DevOps - Projekt</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen py-12 px-4">
+    <div class="max-w-3xl mx-auto">
+        <!-- Header -->
+        <header class="mb-12 text-center">
+            <h1 class="text-4xl font-bold text-gray-900 mb-2">RIRS DevOps Projekt</h1>
+            <p class="text-gray-600">Todo aplikacija z FastAPI backendom in Next.js frontendom</p>
+        </header>
+
+        <!-- Team Members -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Člani ekipe</h2>
+            <div class="flex flex-wrap gap-2">
+                <span class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md text-sm">Gregor Span</span>
+            </div>
+        </section>
+
+        <!-- Project Description -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Opis projekta</h2>
+            <div class="bg-white border-l-4 border-gray-300 pl-6 py-4 space-y-4 text-gray-700">
+                <p>
+                    RIRS DevOps je moderna todo aplikacija, ki omogoča upravljanje opravil z intuitivnim uporabniškim vmesnikom. 
+                    Projekt je sestavljen iz dveh glavnih komponent:
+                </p>
+                <p>
+                    <strong class="text-gray-900">Backend (FastAPI):</strong> RESTful API, ki omogoča upravljanje todo elementov. 
+                    API podpira osnovne CRUD operacije in zagotavlja robustno rešitev za shranjevanje in upravljanje podatkov.
+                </p>
+                <p>
+                    <strong class="text-gray-900">Frontend (Next.js):</strong> Sodoben spletni vmesnik, zgrajen z Next.js in shadcn/ui komponentami. 
+                    Aplikacija omogoča enostavno dodajanje, urejanje in brisanje opravil z real-time posodobitvami.
+                </p>
+                <p>
+                    Projekt uporablja CI/CD pipeline z GitHub Actions za avtomatizirano testiranje, gradnjo Docker slik 
+                    in uvajanje v različna okolja (Development in Production).
+                </p>
+            </div>
+        </section>
+
+        <!-- Technologies -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Tehnologije</h2>
+            <div class="flex flex-wrap gap-2">
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm border border-gray-200">FastAPI</span>
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm border border-gray-200">Next.js</span>
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm border border-gray-200">TypeScript</span>
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm border border-gray-200">Python</span>
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm border border-gray-200">Docker</span>
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm border border-gray-200">GitHub Actions</span>
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm border border-gray-200">shadcn/ui</span>
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm border border-gray-200">Vitest</span>
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm border border-gray-200">Pytest</span>
+            </div>
+        </section>
+
+        <!-- Links -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Povezave</h2>
+            <div class="flex flex-wrap gap-3">
+                <a href="https://github.com/uni2526/rirs-devops" 
+                   class="px-6 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 transition-colors text-sm font-medium" 
+                   target="_blank">GitHub Repozitorij</a>
+                <a href="https://rirs-frontend-1jqg.onrender.com" 
+                   class="px-6 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 transition-colors text-sm font-medium" 
+                   target="_blank">Frontend Aplikacija</a>
+                <a href="https://rirs-backend-um8m.onrender.com/docs" 
+                   class="px-6 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 transition-colors text-sm font-medium" 
+                   target="_blank">API Dokumentacija</a>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
