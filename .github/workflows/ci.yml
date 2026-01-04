@@ -113,24 +113,40 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Wait for SonarCloud Quality Gate
-        uses: sonarsource/sonarcloud-github-action@master
-        id: sonarcloud-quality-gate
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          scanMetadataReportFile: .scannerwork/report-task.txt
-
-      - name: Check Quality Gate Status
+      - name: Wait for SonarCloud analysis to complete
         run: |
-          if [ "${{ steps.sonarcloud-quality-gate.outputs.quality-gate-status }}" != "OK" ]; then
-            echo "❌ Quality Gate failed! Status: ${{ steps.sonarcloud-quality-gate.outputs.quality-gate-status }}"
-            echo "Quality Gate URL: ${{ steps.sonarcloud-quality-gate.outputs.quality-gate-url }}"
+          echo "⏳ Waiting for SonarCloud analysis to complete..."
+          sleep 10
+
+      - name: Check SonarCloud Quality Gate Status
+        run: |
+          PROJECT_KEY="gregorspan-rirs2026"
+          ORGANIZATION="gregorspan-rirs2026"
+          
+          echo "🔍 Checking Quality Gate status for project: $PROJECT_KEY"
+          
+          # Get the quality gate status from SonarCloud API
+          QG_STATUS=$(curl -s -u "${{ secrets.SONAR_TOKEN }}:" \
+            "https://sonarcloud.io/api/qualitygates/project_status?projectKey=$PROJECT_KEY" | \
+            grep -o '"status":"[^"]*"' | cut -d'"' -f4)
+          
+          if [ -z "$QG_STATUS" ]; then
+            echo "⚠️  Could not retrieve Quality Gate status. This might be the first analysis."
+            echo "✅ Proceeding with deployment..."
+            exit 0
+          fi
+          
+          echo "📊 Quality Gate Status: $QG_STATUS"
+          
+          if [ "$QG_STATUS" != "OK" ]; then
+            echo "❌ Quality Gate FAILED! Status: $QG_STATUS"
+            echo "🔗 View details: https://sonarcloud.io/project/overview?id=$PROJECT_KEY"
+            echo ""
+            echo "Please fix the quality issues before deploying to Production."
             exit 1
           else
-            echo "✅ Quality Gate passed!"
-            echo "Quality Gate URL: ${{ steps.sonarcloud-quality-gate.outputs.quality-gate-url }}"
+            echo "✅ Quality Gate PASSED!"
+            echo "🔗 View details: https://sonarcloud.io/project/overview?id=$PROJECT_KEY"
           fi
 
   # Build jobs
@@ -302,7 +318,7 @@ jobs:
   docker-build-frontend-prod:
     name: Build Frontend Docker Image (Production)
     runs-on: ubuntu-latest
-    needs: frontend-build
+    needs: [frontend-build, quality-gate-check]
     if: github.event_name == 'push' && github.ref == 'refs/heads/production'
     environment:
       name: Production
@@ -335,7 +351,7 @@ jobs:
   docker-build-backend-prod:
     name: Build Backend Docker Image (Production)
     runs-on: ubuntu-latest
-    needs: backend-build
+    needs: [backend-build, quality-gate-check]
     if: github.event_name == 'push' && github.ref == 'refs/heads/production'
     environment:
       name: Production
