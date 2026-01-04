@@ -120,7 +120,7 @@ jobs:
 
       - name: Check SonarCloud Quality Gate Status
         run: |
-          PROJECT_KEY="gregorspan-rirs2026"
+          PROJECT_KEY="gregorspan_rirs-devops"
           ORGANIZATION="gregorspan-rirs2026"
           
           echo "🔍 Checking Quality Gate status for project: $PROJECT_KEY"
